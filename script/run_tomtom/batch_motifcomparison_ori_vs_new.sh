@@ -1,0 +1,150 @@
+#! /bin/bash
+
+process_motif_comparison(){
+	local MOTIFS0=(${!1})
+	local MOTIFS1=(${!2})
+	local DIRCT=$3
+	local DBDFAM=$4
+	for (( i=0; i<${#MOTIFS0[@]}; i++ ))
+	do
+		DIRCTORI0=$DIRCT'/original_7mers/'${MOTIFS1[i]}'_FIRE/DNA/'${MOTIFS1[i]}'.summary'
+		DIRCTNEW0=$DIRCT'/new_7mers/'${MOTIFS1[i]}'_FIRE/DNA/'${MOTIFS1[i]}'.summary'
+		bash motifcomparison_ori_vs_new.sh ${MOTIFS0[i]} ${MOTIFS1[i]} $DBDFAM $DIRCTORI0 $DIRCTNEW0 ${MOTIFS1[i]}'_k7' $USE_YETFASCO
+		DIRCTORI1=$DIRCT'/original_8mers/'${MOTIFS1[i]}'_FIRE/DNA/'${MOTIFS1[i]}'.summary'
+		DIRCTNEW1=$DIRCT'/new_8mers/'${MOTIFS1[i]}'_FIRE/DNA/'${MOTIFS1[i]}'.summary'
+		bash motifcomparison_ori_vs_new.sh ${MOTIFS0[i]} ${MOTIFS1[i]} $DBDFAM $DIRCTORI1 $DIRCTNEW1 ${MOTIFS1[i]}'_k8' $USE_YETFASCO
+	done
+}
+
+DIR_DATA=$HOME/proj_motifinference/resources/yeast
+USE_YETFASCO=1 # use yetfasco database as complement of scertf
+
+# # gata family
+# GATA_MOTIFS0=( SRD1 GLN3 GAT1 GAT4 GZF3 ASH1 DAL80 GAT3 ECM23 )
+# GATA_MOTIFS1=( YCR018C YER040W YFL021W YIR013C YJL110C YKL185W YKR034W YLR013W YPL021W ) 
+# GATA_DIRCT=$DIR_DATA/ChIP_data_gata_fam
+# GATA_DBDFAM=gata
+# process_motif_comparison GATA_MOTIFS0[@] GATA_MOTIFS1[@] $GATA_DIRCT $GATA_DBDFAM 
+
+# # hlh family
+# HLH_MOTIFS0=( RTG3 INO2 PHO4 CBF1 RTG1 HMS1 TYE7 )
+# HLH_MOTIFS1=( YBL103C YDR123C YFR034C YJR060W YOL067C YOR032C YOR344C )
+# HLH_DIRCT=$DIR_DATA/ChIP_data_hlh_fam
+# HLH_DBDFAM=hlh
+# process_motif_comparison HLH_MOTIFS0[@] HLH_MOTIFS1[@] $HLH_DIRCT $HLH_DBDFAM
+
+# # homeobox family
+# HB_MOTIFS0=( HMLALPHA2 MATALPHA2 HMRA2 HMRA1 PHO2 YHP1 TOS8 YOX1 )
+# HB_MOTIFS1=( YCL067C YCR039C YCR096C YCR097W YDL106C YDR451C YGL096W YML027W )
+# HB_DIRCT=$DIR_DATA/ChIP_data_homeobox_fam
+# HB_DBDFAM=homeobox
+# process_motif_comparison HB_MOTIFS0[@] HB_MOTIFS1[@] $HB_DIRCT $HB_DBDFAM
+
+# # hsf family
+# HSF_MOTIFS0=( HSF1 MGA1 SKN7 HMS2 SFL1 )
+# HSF_MOTIFS1=( YGL073W YGR249W YHR206W YJR147W YOR140W )
+# HSF_DIRCT=$DIR_DATA/ChIP_data_hsf_fam
+# HSF_DBDFAM=hsf
+# process_motif_comparison HSF_MOTIFS0[@] HSF_MOTIFS1[@] $HSF_DIRCT $HSF_DBDFAM
+
+# # znclus family with gapsize > 1
+# ZNCLUS_MOTIFS0=( OAF1 PUT3 PPR1 ECM22 HAP1 LEU3 PIP2 GAL4 TBS1 UGA3 ARO80 ASG1 SIP4 HAL9 )
+# ZNCLUS_MOTIFS1=( YAL051W YKL015W YLR014C YLR228C YLR256W YLR451W YOR363C YPL248C YBR150C YDL170W YDR421W YIL130W YJL089W YOL089C )  
+# ZNCLUS_DIRCT=$DIR_DATA/ChIP_data_znclus_fam/
+# ZNCLUS_DBDFAM=znclus
+# for (( i=0; i<${#ZNCLUS_MOTIFS0[@]}; i++ ))
+# do
+# 	ZNCLUS_DIRCTORI0=$ZNCLUS_DIRCT'/original_kmers/'${ZNCLUS_MOTIFS1[i]}'_FIRE_*_k6/DNA/'${ZNCLUS_MOTIFS1[i]}'.summary'
+# 	ZNCLUS_DIRCTNEW0=$ZNCLUS_DIRCT'/new_kmers/'${ZNCLUS_MOTIFS1[i]}'_FIRE_*_k6/DNA/'${ZNCLUS_MOTIFS1[i]}'.summary'
+# 	bash motifcomparison_ori_vs_new.sh ${ZNCLUS_MOTIFS0[i]} ${ZNCLUS_MOTIFS1[i]} $ZNCLUS_DBDFAM $ZNCLUS_DIRCTORI0 $ZNCLUS_DIRCTNEW0 ${ZNCLUS_MOTIFS1[i]}'_k6' $USE_YETFASCO
+# 	ZNCLUS_DIRCTORI1=$ZNCLUS_DIRCT'/original_kmers/'${ZNCLUS_MOTIFS1[i]}'_FIRE_*_k8/DNA/'${ZNCLUS_MOTIFS1[i]}'.summary'
+# 	ZNCLUS_DIRCTNEW1=$ZNCLUS_DIRCT'/new_kmers/'${ZNCLUS_MOTIFS1[i]}'_FIRE_*_k8/DNA/'${ZNCLUS_MOTIFS1[i]}'.summary'
+# 	bash motifcomparison_ori_vs_new.sh ${ZNCLUS_MOTIFS0[i]} ${ZNCLUS_MOTIFS1[i]} $ZNCLUS_DBDFAM $ZNCLUS_DIRCTORI1 $ZNCLUS_DIRCTNEW1 ${ZNCLUS_MOTIFS1[i]}'_k8' $USE_YETFASCO
+# done
+# # znclus family with gapsize = 0 or 1
+# ZNCLUS_MOTIFS0=( PDR3 PDR1 RDS1 UME6 STB4 )
+# ZNCLUS_MOTIFS1=( YBL005W YGL013C YCR106W YDR207C YMR019W )  
+# ZNCLUS_DIRCT=$DIR_DATA/ChIP_data_znclus_fam/
+# ZNCLUS_DBDFAM=znclus
+# for (( i=0; i<${#ZNCLUS_MOTIFS0[@]}; i++ ))
+# do
+# 	ZNCLUS_DIRCTORI0=$ZNCLUS_DIRCT'/original_kmers/'${ZNCLUS_MOTIFS1[i]}'_FIRE_*_k6/DNA/'${ZNCLUS_MOTIFS1[i]}'.summary'
+# 	ZNCLUS_DIRCTNEW0=$ZNCLUS_DIRCT'/new_kmers/'${ZNCLUS_MOTIFS1[i]}'_FIRE_*_k6/DNA/'${ZNCLUS_MOTIFS1[i]}'.summary'
+
+# 	bash motifcomparison_ori_vs_new.sh ${ZNCLUS_MOTIFS0[i]} ${ZNCLUS_MOTIFS1[i]} $ZNCLUS_DBDFAM $ZNCLUS_DIRCTORI0 $ZNCLUS_DIRCTNEW0 ${ZNCLUS_MOTIFS1[i]}'_k6' $USE_YETFASCO
+# done
+
+# # zfc2h2 family
+# ZFC2H2_MOTIFS0=( NRG2 STP4 NRG1 GIS1 SWI5 ADR1 MET32 STP1 MIG3 YER130C RPH1 MIG1 MIG2 FZF1 RME1 YGR067C RIM101 STP2 ZAP1 RSF2 MSN4 ACE2 STP3 SFP1 YML081W MSN2 MOT3 RGM1 CRZ1 JJJ1 AZF1 MET31 USV1 YPR013C YPR015C YPR022C PZF1 )
+# ZFC2H2_MOTIFS1=( YBR066C YDL048C YDR043C YDR096W YDR146C YDR216W YDR253C YDR463W YER028C YER130C YER169W YGL035C YGL209W YGL254W YGR044C YGR067C YHL027W YHR006W YJL056C YJR127C YKL062W YLR131C YLR375W YLR403W YML081W YMR037C YMR070W YMR182C YNL027W YNL227C YOR113W YPL038W YPL230W YPR013C YPR015C YPR022C YPR186C )
+# ZFC2H2_DIRCT=$DIR_DATA/ChIP_data_zfc2h2_fam
+# ZFC2H2_DBDFAM=zfc2h2
+# process_motif_comparison ZFC2H2_MOTIFS0[@] ZFC2H2_MOTIFS1[@] $ZFC2H2_DIRCT $ZFC2H2_DBDFAM
+
+# # bzip family
+# BZIP_MOTIFS0=( YAP6 CAD1 GCN4 ACA1 HAC1 YAP3 CST6 MET28 YAP5 YAP1 SKO1 YAP7 CIN5 )
+# BZIP_MOTIFS1=( YDR259C YDR423C YEL009C YER045C YFL031W YHL009C YIL036W YIR017C YIR018W YML007W YNL167C YOL028C YOR028C )
+# BZIP_DIRCT=$DIR_DATA/ChIP_data_bzip_fam
+# BZIP_DBDFAM=bzip
+# process_motif_comparison BZIP_MOTIFS0[@] BZIP_MOTIFS1[@] $BZIP_DIRCT $BZIP_DBDFAM
+
+# # mlu1box family
+# MLU1BOX_MOTIFS0=( MBP1 SWI4 XBP1 PHD1 SOK2 )
+# MLU1BOX_MOTIFS1=( YDL056W YER111C YIL101C YKL043W YMR016C )
+# MLU1BOX_DIRCT=$DIR_DATA/ChIP_data_mlu1box_fam
+# MLU1BOX_DBDFAM=mlu1box
+# process_motif_comparison MLU1BOX_MOTIFS0[@] MLU1BOX_MOTIFS1[@] $MLU1BOX_DIRCT $MLU1BOX_DBDFAM
+
+# # forkhead family
+# FORKHEAD_MOTIFS0=( HCM1 FKH2 FKH1 FHL1 )
+# FORKHEAD_MOTIFS1=( YCR065W YNL068C YIL131C YPR104C )
+# FORKHEAD_DIRCT=$DIR_DATA/ChIP_data_forkhead_fam
+# FORKHEAD_DBDFAM=forkhead
+# process_motif_comparison FORKHEAD_MOTIFS0[@] FORKHEAD_MOTIFS1[@] $FORKHEAD_DIRCT $FORKHEAD_DBDFAM
+
+# # myb family
+# MYB_MOTIFS0=( ADA2 BAS1 BDP1 RSCB8 SNT1 CEF1 )
+# MYB_MOTIFS1=( YDR448W YKR099W YNL039W YFR037C YCR033W YMR213W )
+# MYB_DIRCT=$DIR_DATA/ChIP_data_myb_fam
+# MYB_DBDFAM=myb
+# process_motif_comparison MYB_MOTIFS0[@] MYB_MOTIFS1[@] $MYB_DIRCT $MYB_DBDFAM
+
+# # srf family
+# SRF_MOTIFS0=( SMP1 ARG80 MCM1 RLM1 )
+# SRF_MOTIFS1=( YBR182C YMR042W YMR043W YPL089C )
+# SRF_DIRCT=$DIR_DATA/ChIP_data_srf_fam
+# SRF_DBDFAM=srf
+# process_motif_comparison SRF_MOTIFS0[@] SRF_MOTIFS1[@] $SRF_DIRCT $SRF_DBDFAM
+
+
+
+# list of all dbd faimily names
+ALL_FAM=( gata hlh homeobox hsf znclus zfc2h2 bzip mlu1box forkhead myb srf )
+ALL_FAM_DIR=$DIR_DATA/validation/ChIP_data_comp_ori_vs_new/all_fam_names.txt
+touch $ALL_FAM_DIR
+for (( i=0; i<${#ALL_FAM[@]}; i++ ))
+do
+	echo "${ALL_FAM[i]}" >> $ALL_FAM_DIR
+done
+
+# summarize all sign reports
+SUM_REPORT_DIR=$DIR_DATA/validation/ChIP_data_comp_ori_vs_new/sum_sign_report.txt
+touch $SUM_REPORT_DIR
+REPORT_DIRT=$DIR_DATA/validation/ChIP_data_comp_ori_vs_new/*/*_sign_report.txt
+for file in $REPORT_DIRT
+do
+	if [ -s $file ]
+		then
+		read line < $file
+		echo "$line" >> $SUM_REPORT_DIR
+	fi
+done
+
+# stats sum sign report
+RANK_REPORT_DIR=$DIR_DATA/validation/ChIP_data_comp_ori_vs_new/stats_sign_report.txt
+python $HOME/proj_motifinference/script/tomtom_comparison/stats_sign_reports.py $SUM_REPORT_DIR -f $ALL_FAM_DIR -o $RANK_REPORT_DIR
+python $HOME/proj_motifinference/script/tomtom_comparison/plot_stats.py $RANK_REPORT_DIR -f $ALL_FAM_DIR
+rm $ALL_FAM_DIR
+
+
+
